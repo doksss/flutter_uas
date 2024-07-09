@@ -26,9 +26,9 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  String _user_id = "";
+  String _user_name = "";
   String _user_password = "";
-  String error_login = "";
+  String _message = "";
 
 // void doLogin() async {
   //   final response = await http.post(
@@ -51,11 +51,31 @@ class _RegisterState extends State<Register> {
   //     throw Exception('Failed to read API');
   //   }
   // }
-  void doLogin() async{
-    //later, we use web service here to check the user id and password
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString("user_id", _user_id);
-    main();
+  void doRegister() async {
+    final response = await http.post(
+      Uri.parse("https://ubaya.me/flutter/160421059/uas/register.php"),
+      body: {
+        'user_name': _user_name,
+        'user_password': _user_password,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      Map json = jsonDecode(response.body);
+      if (json['result'] == 'success') {
+        setState(() {
+          _message = "Registration successful";
+        });
+      } else {
+        setState(() {
+          _message = "Registration failed: ${json['message']}";
+        });
+      }
+    } else {
+      setState(() {
+        _message = "Failed to connect to server";
+      });
+    }
   }
 
   @override
@@ -78,12 +98,12 @@ class _RegisterState extends State<Register> {
               padding: EdgeInsets.all(10),
               child: TextField(
                 onChanged: (v) {
-                  _user_id = v;
+                  _user_name = v;
                 },
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Username',
-                    hintText: 'Enter valid email id as abc@gmail.com'),
+                    hintText: 'Enter valid username'),
               ),
             ),
             Padding(
@@ -110,7 +130,7 @@ class _RegisterState extends State<Register> {
                       borderRadius: BorderRadius.circular(20)),
                   child: ElevatedButton(
                     onPressed: () {
-                      doLogin();
+                      doRegister();
                     },
                     child: Text(
                       'Register',
@@ -118,6 +138,15 @@ class _RegisterState extends State<Register> {
                     ),
                   ),
                 )),
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: Text(
+                _message,
+                style: TextStyle(
+                  color: Colors.red,
+                ),
+              ),
+            ),
           ]),
         ));
   }

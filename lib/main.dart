@@ -9,8 +9,8 @@ import 'package:uas_project/screen/offer.dart';
 String active_user = "";
 Future<String> checkUser() async {
   final prefs = await SharedPreferences.getInstance();
-  String user_id = prefs.getString("user_id") ?? '';
-  return user_id;
+  String user_name = prefs.getString("user_name") ?? '';
+  return user_name;
 }
 
 void main() {
@@ -99,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void doLogout() async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.remove("user_id");
+    prefs.remove("user_name");
     main();
   }
 
