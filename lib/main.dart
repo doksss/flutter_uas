@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uas_project/class/adopt.dart';
 import 'package:uas_project/screen/adopt.dart';
 import 'package:uas_project/screen/browse.dart';
 import 'package:uas_project/screen/home.dart';
@@ -110,8 +111,8 @@ class _MyHomePageState extends State<MyHomePage> {
       child: ListView(
         children: <Widget>[
           UserAccountsDrawerHeader(
-              accountName: Text(_username),
-              accountEmail: Text("xyz@gmail.com"),
+              accountName: Text("Pengguna: " + _username),
+              accountEmail: Text(""),
               currentAccountPicture: CircleAvatar(
                   backgroundImage: NetworkImage("https://i.pravatar.cc/150"))),
           ListTile(

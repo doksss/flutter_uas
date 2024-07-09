@@ -3,7 +3,16 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:uas_project/class/browse.dart';
+import 'package:uas_project/main.dart';
 import 'package:uas_project/screen/propose.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+String active_user = "";
+Future<String> checkUser() async {
+  final prefs = await SharedPreferences.getInstance();
+  String user_id = prefs.getString("user_id") ?? '';
+  return user_id;
+}
 
 class Browse extends StatefulWidget {
   @override
@@ -17,8 +26,9 @@ class _BrowseState extends State<Browse> {
   String _temp = "Waiting API respond";
 
   Future<String> fetchData() async {
-    final response = await http
-        .get(Uri.parse("https://ubaya.me/flutter/160421059/uas/browse.php"));
+    final response = await http.post(
+        Uri.parse("https://ubaya.me/flutter/160421059/uas/browse.php"),
+        body: {'iduser': active_user});
     if (response.statusCode == 200) {
       return response.body;
     } else {
@@ -35,16 +45,27 @@ class _BrowseState extends State<Browse> {
         BrowseArray.add(pa);
       }
       setState(() {
-        _temp = BrowseArray[0].nama;
-        print('State updated: $BrowseArray');
+  
       });
     });
+  }
+
+  void doPropose(int animalid) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString("animal_id", animalid.toString());
   }
 
   @override
   void initState() {
     super.initState();
-    bacaData();
+    checkUser().then((value) => setState(
+          () {
+            active_user = value;
+            if (active_user.isNotEmpty) {
+              bacaData();
+            }
+          },
+        ));
   }
 
   Widget DaftarBrowseAnimal(Animals) {
@@ -102,7 +123,7 @@ class _BrowseState extends State<Browse> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => Propose()));
+                                    builder: (context) => Propose(animalID: Animals[index].id,)));
                           },
                           child: Text(
                             'Propose',
@@ -128,7 +149,7 @@ class _BrowseState extends State<Browse> {
         appBar: AppBar(title: const Text('Browse Animals')),
         body: ListView(children: <Widget>[
           Container(
-            height: MediaQuery.of(context).size.height - 200,
+            height: MediaQuery.of(context).size.height - 100,
             // child: DaftarPopActor(PAsArray),
             child: DaftarBrowseAnimal(BrowseArray),
           )
