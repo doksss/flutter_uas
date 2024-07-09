@@ -112,9 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
         children: <Widget>[
           UserAccountsDrawerHeader(
               accountName: Text("Pengguna: " + _username),
-              accountEmail: Text(""),
-              currentAccountPicture: CircleAvatar(
-                  backgroundImage: NetworkImage("https://i.pravatar.cc/150"))),
+              accountEmail: Text(""),),
           ListTile(
             title: new Text("Logout"),
             leading: new Icon(Icons.logout),

@@ -1,12 +1,12 @@
 
 class Adopts {
   final int id;
-  final String nama;
-  final String keterangan;
-  final String foto;
-  final int num_interes;
-  final String jenis_hewan;
-  final String status;
+  String nama;
+  String keterangan;
+  String foto;
+  int num_interes;
+  String jenis_hewan;
+  String status;
 
   Adopts(
       {required this.id,

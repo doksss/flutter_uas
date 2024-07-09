@@ -6,6 +6,8 @@ import 'package:uas_project/class/browse.dart';
 import 'package:uas_project/class/offer.dart';
 import 'package:uas_project/main.dart';
 import 'package:uas_project/screen/decision.dart';
+import 'package:uas_project/screen/editoffer.dart';
+import 'package:uas_project/screen/newoffer.dart';
 import 'package:uas_project/screen/propose.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -46,9 +48,28 @@ class _OfferState extends State<Offer> {
         Offers pa = Offers.fromJson(act);
         OfferArray.add(pa);
       }
-      setState(() {
-      });
+      setState(() {});
     });
+  }
+
+  void delete(int _idAnimal) async {
+    final response = await http.post(
+        Uri.parse("https://ubaya.me/flutter/160421059/uas/deleteoffer.php"),
+        body: {
+          'id': _idAnimal.toString(),
+        });
+    if (response.statusCode == 200) {
+      Map json = jsonDecode(response.body);
+      if (json['result'] == 'success') {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Sukses Menghapus Offer')));
+      }
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Error')));
+      throw Exception('Failed to read API');
+    }
   }
 
   @override
@@ -88,7 +109,10 @@ class _OfferState extends State<Offer> {
                         Text(
                           Animals[index].nama +
                               " - " +
-                              Animals[index].jenis_hewan + ' (' + Animals[index].status + ')',
+                              Animals[index].jenis_hewan +
+                              ' (' +
+                              Animals[index].status +
+                              ')',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 24,
@@ -98,8 +122,7 @@ class _OfferState extends State<Offer> {
                         // Add a space between the title and the text
                         Container(height: 10),
                         Text(
-                          'Adopter: ' + 
-                          (Animals[index].username ?? '-'),
+                          'Adopter: ' + (Animals[index].username ?? '-'),
                           style: TextStyle(
                             fontSize: 15,
                             color: Colors.grey[700],
@@ -124,47 +147,57 @@ class _OfferState extends State<Offer> {
                         ),
                         Container(height: 12),
                         Visibility(
-                          visible: Animals[index].status == 'Belum Teradopsi' && Animals[index].num_interes >0,
+                          visible: Animals[index].status == 'Belum Teradopsi' &&
+                              Animals[index].num_interes > 0,
                           child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Decision(animalID: Animals[index].id,)));
-                          },
-                          child: Text(
-                            'Choose Adopter',
-                            style: TextStyle(color: Colors.green, fontSize: 15),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Decision(
+                                            animalID: Animals[index].id,
+                                          )));
+                            },
+                            child: Text(
+                              'Choose Adopter',
+                              style:
+                                  TextStyle(color: Colors.green, fontSize: 15),
+                            ),
                           ),
-                        ),),
+                        ),
                         Visibility(
-                          visible: Animals[index].status == 'Belum Teradopsi' && Animals[index].num_interes == 0,
+                          visible: Animals[index].status == 'Belum Teradopsi' &&
+                              Animals[index].num_interes == 0,
                           child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Propose(animalID: Animals[index].id,)));
-                          },
-                          child: Text(
-                            'Edit',
-                            style: TextStyle(color: Colors.green, fontSize: 15),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => EditOffer(
+                                            offerID: Animals[index].id,
+                                          )));
+                            },
+                            child: Text(
+                              'Edit',
+                              style:
+                                  TextStyle(color: Colors.green, fontSize: 15),
+                            ),
                           ),
-                        ),),
+                        ),
                         Visibility(
-                          visible: Animals[index].status == 'Belum Teradopsi' && Animals[index].num_interes == 0,
+                          visible: Animals[index].status == 'Belum Teradopsi' &&
+                              Animals[index].num_interes == 0,
                           child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Propose(animalID: Animals[index].id,)));
-                          },
-                          child: Text(
-                            'Delete',
-                            style: TextStyle(color: Colors.redAccent, fontSize: 15),
+                            onPressed: () {
+                              delete(Animals[index].id);
+                            },
+                            child: Text(
+                              'Delete',
+                              style: TextStyle(
+                                  color: Colors.redAccent, fontSize: 15),
+                            ),
                           ),
-                        ),),
+                        ),
                       ],
                     ),
                   ),
@@ -183,6 +216,16 @@ class _OfferState extends State<Offer> {
     return Scaffold(
         appBar: AppBar(title: const Text('Offer Animals')),
         body: ListView(children: <Widget>[
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => NewOffer()));
+            },
+            child: Text(
+              'Add New Offer',
+              style: TextStyle(color: Colors.redAccent, fontSize: 15),
+            ),
+          ),
           Container(
             height: MediaQuery.of(context).size.height - 200,
             // child: DaftarPopActor(PAsArray),
