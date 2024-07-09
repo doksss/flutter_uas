@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
+import 'package:uas_project/screen/offer.dart';
 
 import 'package:uas_project/class/adopt.dart';
 
@@ -33,7 +34,6 @@ class EditOfferState extends State<EditOffer> {
     bacaData();
   }
 
-
   void submit() async {
     final response = await http.post(
         Uri.parse("https://ubaya.me/flutter/160421059/uas/updateoffer.php"),
@@ -42,7 +42,7 @@ class EditOfferState extends State<EditOffer> {
           'keterangan': pm.keterangan,
           'foto': pm.foto,
           'jenis_hewan': pm.jenis_hewan,
-          'id':widget.offerID.toString(),
+          'id': widget.offerID.toString(),
         });
     if (response.statusCode == 200) {
       // print(response.body);
@@ -51,6 +51,8 @@ class EditOfferState extends State<EditOffer> {
         if (!mounted) return;
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('Sukses mengubah Data')));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Offer()));
       }
     } else {
       throw Exception('Failed to read API');
