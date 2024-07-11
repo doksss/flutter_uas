@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uas_project/main.dart';
 import 'package:http/http.dart' as http;
+import 'package:uas_project/screen/login.dart';
 
 class MyRegister extends StatelessWidget {
   @override
@@ -65,6 +66,8 @@ class _RegisterState extends State<Register> {
       if (json['result'] == 'success') {
         setState(() {
           _message = "Registration successful";
+          Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Login()));
         });
       } else {
         setState(() {
@@ -76,6 +79,7 @@ class _RegisterState extends State<Register> {
         _message = "Failed to connect to server";
       });
     }
+    
   }
 
   @override
