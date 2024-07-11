@@ -98,7 +98,7 @@ class _OfferState extends State<Offer> {
                     Animals[index].foto,
                     height: 300,
                     width: double.infinity,
-                    fit: BoxFit.cover,
+                    fit: BoxFit.contain,
                   ),
                   Container(
                     padding: const EdgeInsets.fromLTRB(30, 15, 15, 0),

@@ -177,7 +177,7 @@ class TutorialCard extends StatelessWidget {
         child: Column(
           children: [
             Text(
-              'Tutorial',
+              'PetAdopt',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
@@ -186,11 +186,10 @@ class TutorialCard extends StatelessWidget {
             Divider(),
             SizedBox(height: 10),
             Text(
-              '1. Pertama kali game akan menampilkan 5 gambar secara acak dan bergantian dan harus diingat oleh pemain\n' +
-                  '2.  sistem akan menampilkan 4 opsi gambar yang harus ditebak oleh user. Salah satu dari 4 opsi yang tersedia merupakan\n' +
-                  'gambar yang harus diingat pemain, sedangkan 3 gambar lainnya hanyalah pengecoh/tipuan\n' +
-                  '3. Setiap pertanyaan hanya diberikan waktu 30 detik dan jika waktu habis maka akan menampilkan pertanyaan selanjutnya\n' +
-                  '4. Jawaban benar akan bernilai 1 point dan jika salah maka bernilai 0 point',
+              'PetAdopt adalah sebuah website dimana pengguna dapat bernegosiasi untuk mengadopsi hewan peliharaan dari pengguna lainnya. Terdapat 3 hal yang dapat dilakukan oleh pengguna, yaitu browse, offer, dan adopt\n' +
+                  '1. Pada halaman browse ditampilkan beberapa daftar hewan yang ditawarkan bagi pengguna. Jika ada hewan yang ingin diadopsi, maka pengguna bisa menekan tombol propose. Proses propose ini akan menunggu konfirmasi dari pemilik hewan tersebut.\n' +
+                  '2. Pada halaman offer ditampilkan beberapa hewan yang pernah diposting oleh pengguna. Apabila terdapat pengguna lain yang ingin mengadopsi hewan milik pengguna, akan muncul tombol decision yang dimana pengguna dapat memutuskan untuk memilih satu dari calon-calon pengadopsi. Jika belum, tombol decision tidak akan muncul namun terdapat tombol edit dan delete untuk mengubah ataupun menghapus penawaran. Pada halaman ini pengguna juga dapat membuat penawaran baru untuk hewan yang ingin ditawarkan.\n' +
+                  '3. Pada halaman adopt ditampilkan hewan-hewan yang sedang di propose, gagal adopsi, maupun yang telah disetujui untuk diadopsi',
               style: TextStyle(fontSize: 16),
             ),
             SizedBox(height: 10),
